@@ -4,8 +4,31 @@ const  yargs = require('yargs');
 
 const notes = require('./notes.js');
 
-var argv=yargs.argv;
-var command=process.argv[2];
+const titleOptions={
+    describe:'Title of note',
+    demand : true,
+    alias:'t'
+};
+
+var argv = yargs
+           .command('add','Add a note',{
+              title:titleOptions,
+              body:{
+                describe:'Body of note',
+                demand : true,
+                alias:'b'
+              }
+           })
+           .command('list','List all notes')
+           .command('read','Read an existing note',{
+             title:titleOptions
+           })
+           .command('remove','Remove an existing note',{
+             title:titleOptions
+           })
+           .help()
+           .argv;
+var command=argv._[0];
 
 if (command === 'add' ){
   var note = notes.addNote(argv.title,argv.body);
